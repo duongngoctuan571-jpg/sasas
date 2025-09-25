@@ -1,0 +1,97 @@
+-- ====== KRNL Lyrics Script Full ======
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Tạo ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LyricsGUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+-- Tạo TextLabel
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0.8,0,0.2,0)
+textLabel.Position = UDim2.new(0.1,0,0.4,0)
+textLabel.BackgroundTransparency = 0.5
+textLabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
+textLabel.TextColor3 = Color3.fromRGB(255,255,0)
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextScaled = true
+textLabel.TextStrokeTransparency = 0
+textLabel.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+textLabel.Text = "Bắt đầu lời bài hát..."
+textLabel.Parent = screenGui
+
+-- Toàn bộ lời bài hát với thời gian ước lượng
+local LYRICS = {
+    -- [Lời 1]
+    {Time=0, Text="Có những tiếng hát tôi muốn đem cho đời"},
+    {Time=6, Text="Mà làm môi không nên lời"},
+    {Time=11, Text="Có những tiếc nuối tựa như chim trời bay đi"},
+    {Time=17, Text="Thôi nhớ nhung thêm làm chi, rồi từ li"},
+    {Time=22, Text="Ngày em đưa tôi qua sông"},
+    {Time=27, Text="Có nhớ không, bầu trời rực hồng"},
+    {Time=32, Text="Trên cánh đồng, từng ngọn lúa đang mùa trổ bông"},
+    {Time=38, Text="Vừa tròn đôi mươi, hành trang ra đi đâu có gì ngoài nụ cười"},
+    {Time=45, Text="Và nỗi nhớ thương vô bờ"},
+    {Time=50, Text="Chờ ngày bình yên"},
+
+    -- [Chorus 1]
+    {Time=56, Text="Sau bao nhiêu năm mới có ngày hòa bình"},
+    {Time=61, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
+    {Time=67, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
+    {Time=72, Text="Có bao cái tên nằm lại nơi đây"},
+    {Time=77, Text="Hết kháng chiến nếu con còn chưa về"},
+    {Time=83, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
+    {Time=88, Text="Đem thanh xuân gieo tự do cho đất nước"},
+    {Time=93, Text="Với con thế thôi, còn gì đẹp hơn?"},
+
+    -- [Lời 2]
+    {Time=100, Text="Ngày tìm tự do, em cho tôi nghe thêm mấy lời dặn dò"},
+    {Time=106, Text="Hãy an bình và nhớ quay về tìm em"},
+    {Time=112, Text="Đường về xa xôi sau cơn mưa rơi, tôi trễ hẹn thật rồi"},
+    {Time=118, Text="Nhưng nếu tôi không trở về"},
+    {Time=123, Text="Em cũng vui lên"},
+
+    -- [Chorus 2]
+    {Time=130, Text="Vì sau bao nhiêu năm mới có ngày hòa bình"},
+    {Time=135, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
+    {Time=141, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
+    {Time=146, Text="Có bao cái tên ở lại nơi đây"},
+    {Time=151, Text="Hết kháng chiến nếu con còn chưa về"},
+    {Time=156, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
+    {Time=161, Text="Đem thanh xuân gieo tự do cho đất nước"},
+    {Time=166, Text="Với con thế thôi, còn gì đẹp hơn?"},
+
+    -- [Outro]
+    {Time=173, Text="Sau bao nhiêu năm mới có ngày hòa bình"},
+    {Time=178, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
+    {Time=184, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
+    {Time=189, Text="Có bao cái tên ở mãi nơi đây"},
+    {Time=194, Text="Hết kháng chiến nếu con còn chưa về"},
+    {Time=199, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
+    {Time=204, Text="Đem thanh xuân gieo tự do cho đất nước"},
+    {Time=209, Text="Với con thế thôi, còn gì đẹp hơn?"},
+    {Time=214, Text="Hết kháng chiến nếu con còn chưa về"},
+    {Time=219, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
+    {Time=224, Text="Đem thanh xuân gieo tự do cho đất nước"},
+    {Time=229, Text="Với con thế thôi, còn gì đẹp hơn?"},
+    {Time=234, Text="Với con thế thôi, còn gì đẹp hơn?"}
+}
+
+-- Giả lập thời gian chạy lời
+local startTime = tick()
+
+-- Hiển thị lời theo thời gian
+RunService.RenderStepped:Connect(function()
+    local t = tick() - startTime
+    for i = #LYRICS, 1, -1 do
+        if t >= LYRICS[i].Time then
+            textLabel.Text = LYRICS[i].Text
+            break
+        end
+    end
+end)
