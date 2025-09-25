@@ -1,7 +1,6 @@
--- ====== KRNL Lyrics Script Full ======
+-- ====== KRNL Lyrics Script Full + Nhạc ======
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -22,12 +21,10 @@ textLabel.Font = Enum.Font.SourceSansBold
 textLabel.TextScaled = true
 textLabel.TextStrokeTransparency = 0
 textLabel.TextStrokeColor3 = Color3.fromRGB(0,0,0)
-textLabel.Text = "Bắt đầu lời bài hát..."
 textLabel.Parent = screenGui
 
 -- Toàn bộ lời bài hát với thời gian ước lượng
 local LYRICS = {
-    -- [Lời 1]
     {Time=0, Text="Có những tiếng hát tôi muốn đem cho đời"},
     {Time=6, Text="Mà làm môi không nên lời"},
     {Time=11, Text="Có những tiếc nuối tựa như chim trời bay đi"},
@@ -38,8 +35,6 @@ local LYRICS = {
     {Time=38, Text="Vừa tròn đôi mươi, hành trang ra đi đâu có gì ngoài nụ cười"},
     {Time=45, Text="Và nỗi nhớ thương vô bờ"},
     {Time=50, Text="Chờ ngày bình yên"},
-
-    -- [Chorus 1]
     {Time=56, Text="Sau bao nhiêu năm mới có ngày hòa bình"},
     {Time=61, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
     {Time=67, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
@@ -48,15 +43,11 @@ local LYRICS = {
     {Time=83, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
     {Time=88, Text="Đem thanh xuân gieo tự do cho đất nước"},
     {Time=93, Text="Với con thế thôi, còn gì đẹp hơn?"},
-
-    -- [Lời 2]
     {Time=100, Text="Ngày tìm tự do, em cho tôi nghe thêm mấy lời dặn dò"},
     {Time=106, Text="Hãy an bình và nhớ quay về tìm em"},
     {Time=112, Text="Đường về xa xôi sau cơn mưa rơi, tôi trễ hẹn thật rồi"},
     {Time=118, Text="Nhưng nếu tôi không trở về"},
     {Time=123, Text="Em cũng vui lên"},
-
-    -- [Chorus 2]
     {Time=130, Text="Vì sau bao nhiêu năm mới có ngày hòa bình"},
     {Time=135, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
     {Time=141, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
@@ -65,8 +56,6 @@ local LYRICS = {
     {Time=156, Text="Mẹ ơi vui lên, mẹ có đứa con anh hùng"},
     {Time=161, Text="Đem thanh xuân gieo tự do cho đất nước"},
     {Time=166, Text="Với con thế thôi, còn gì đẹp hơn?"},
-
-    -- [Outro]
     {Time=173, Text="Sau bao nhiêu năm mới có ngày hòa bình"},
     {Time=178, Text="Dù hòa bình ấy cũng đã lấy đi bao máu xương dân mình"},
     {Time=184, Text="Trong đêm hoa đăng sau ngày vui chiến thắng"},
@@ -82,16 +71,26 @@ local LYRICS = {
     {Time=234, Text="Với con thế thôi, còn gì đẹp hơn?"}
 }
 
--- Giả lập thời gian chạy lời
-local startTime = tick()
+-- Tạo Sound (nhạc mới)
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://128390756441021" -- Nhạc mới
+sound.Volume = 1
+sound.Looped = false
+sound.Parent = workspace
 
--- Hiển thị lời theo thời gian
+-- Chờ nhạc load xong
+sound.Loaded:Wait()
+sound:Play()
+
+-- Đồng bộ lời với nhạc
 RunService.RenderStepped:Connect(function()
-    local t = tick() - startTime
-    for i = #LYRICS, 1, -1 do
+    local t = sound.TimePosition
+    for i = #LYRICS,1,-1 do
         if t >= LYRICS[i].Time then
             textLabel.Text = LYRICS[i].Text
             break
         end
     end
 end)
+
+
