@@ -1,29 +1,25 @@
--- ====== KRNL Lyrics Script Full + Nhạc ======
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local player = Players.LocalPlayer
+-- ====== KRNL Lyrics Script + Nhạc Mới ======
+local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 -- Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "LyricsGUI"
-screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
 -- Tạo TextLabel
 local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(0.8,0,0.2,0)
-textLabel.Position = UDim2.new(0.1,0,0.4,0)
-textLabel.BackgroundTransparency = 0.5
-textLabel.BackgroundColor3 = Color3.fromRGB(0,0,0)
-textLabel.TextColor3 = Color3.fromRGB(255,255,0)
+textLabel.Size = UDim2.new(0.8, 0, 0.2, 0)
+textLabel.Position = UDim2.new(0.1, 0, 0.4, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- màu vàng
 textLabel.Font = Enum.Font.SourceSansBold
 textLabel.TextScaled = true
-textLabel.TextStrokeTransparency = 0
+textLabel.TextStrokeTransparency = 0 -- viền chữ
 textLabel.TextStrokeColor3 = Color3.fromRGB(0,0,0)
 textLabel.Parent = screenGui
 
--- Toàn bộ lời bài hát với thời gian ước lượng
+-- ====== Lời bài hát ======
 local LYRICS = {
     {Time=0, Text="Có những tiếng hát tôi muốn đem cho đời"},
     {Time=6, Text="Mà làm môi không nên lời"},
@@ -71,26 +67,23 @@ local LYRICS = {
     {Time=234, Text="Với con thế thôi, còn gì đẹp hơn?"}
 }
 
--- Tạo Sound (nhạc mới)
+-- ====== Thêm nhạc mới ======
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://128390756441021" -- Nhạc mới
 sound.Volume = 1
 sound.Looped = false
 sound.Parent = workspace
 
--- Chờ nhạc load xong
 sound.Loaded:Wait()
 sound:Play()
 
--- Đồng bộ lời với nhạc
-RunService.RenderStepped:Connect(function()
+-- ====== Hiển thị lời theo nhạc ======
+game:GetService("RunService").RenderStepped:Connect(function()
     local t = sound.TimePosition
-    for i = #LYRICS,1,-1 do
+    for i = #LYRICS, 1, -1 do
         if t >= LYRICS[i].Time then
             textLabel.Text = LYRICS[i].Text
             break
         end
     end
 end)
-
-
